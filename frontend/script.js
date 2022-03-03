@@ -1,48 +1,51 @@
-function init(mathFunction) { //itt egy functiont adunk meg argumentumként. (paraméterek mindig function scopeúak)
-    var a = 5;
-    var b = 6;
-    
+const loadEvent = _ => {
 
-    if (a < b) {
-        let c = mathFunction(b, a)
-        console.log(c);
+    const rootElement = document.getElementById("root");
 
-      /*  function initC() {  //hogyan hívjuk meg az anonim függvényt? hogyan lehet rá hivatkozni
-           var c = b - a;
-       };  */
+    const content = `
+    <div id="pic">
+    </div>
+    <form action="fill">
+        <input type="text" placeholder="your name" name="name" id="name"><br>
+        <input type="text" placeholder="cat or dog?" name="animal" id="animal"><br>
+        <input type="text" placeholder="your pet's name" name="pet" id="pet"><br>
+        <select name="choose" id="choose">
+            <option value="both">both</option>
+            <option value="cats">cats</option>
+            <option value="dogs">dogs</option>
+        </select>
+        <input type="submit" id="btn" value="Submit">
+    </form>
+    `;
 
-      /*  (function(){  //immadiately invoked fonction
-            var c = b - a;
-            console.log(c);
-        })();
- */
-       //initC();
-    } else {
-        let c = mathFunction(a, b)
-        console.log(c);
-      /*   function initC() {  //függvénnyel lehet bekeretezni a var változót, hogy ne legyen global scopeja. így most nem lehet kilogolni
-            var c = a - b;
-        } */
+    rootElement.insertAdjacentHTML("beforeend", content);
 
-        /* (function(){
-            var c = a - b;
-            console.log(c);
-        })();
-         */
-        //initC()
-    }
+    const form = rootElement.querySelector("form")
 
-};
+    const inputList = document.querySelectorAll("input");
 
-const initC = (firstNumber, secondNumber) => {
-    return firstNumber - secondNumber;
-};
+   /*  for (const input of inputList) {        //átalakítjuk map()-pé
+        input.addEventListener("input", function (event) {
+            console.log(event.target.value);               // értékét elérni így lehet
+        })
+    } */
+    console.log(typeof inputList);
+    console.log(Array.isArray(inputList));
+    Array.from(inputList).map(function(input) {
+        input.addEventListener("input", function (event) {
+            console.log(event.target.value);
+        });
+    });
 
-const initD = (firstNumber, secondNumber) => {
-    return firstNumber * secondNumber;
+    form.querySelector("select").addEventListener("input", function (e) {  //kiírja a select valueban megadott adat valueját. kiválasztott option value-ja lesz ez.
+        console.log(e.target.value);        
+    })
+
+    form.addEventListener("submit", function (event) {  //ne akarjon megnyitni egy új lapot amikor submitre kattintunk. onsubmit csak formban van ez. nem csak kattintásra történik.
+        event.preventDefault();
+        console.log(event.target);
+    })
 
 }
 
-
-
-init(initD);
+window.addEventListener("load", loadEvent)
