@@ -1,4 +1,4 @@
-const loadEvent = _ => {
+const loadEvent = async _ => {
 
     const rootElement = document.getElementById("root");
 
@@ -24,9 +24,9 @@ const loadEvent = _ => {
 
     const inputList = document.querySelectorAll("input");
 
-   /*  for (const input of inputList) {        //átalakítjuk map()-pé
+   /*  for (const input of inputList) {        
         input.addEventListener("input", function (event) {
-            console.log(event.target.value);               // értékét elérni így lehet
+            console.log(event.target.value);              
         })
     } */
     console.log(typeof inputList);
@@ -37,15 +37,34 @@ const loadEvent = _ => {
         });
     });
 
-    form.querySelector("select").addEventListener("input", function (e) {  //kiírja a select valueban megadott adat valueját. kiválasztott option value-ja lesz ez.
+    form.querySelector("select").addEventListener("input", function (e) {  
         console.log(e.target.value);        
     })
 
-    form.addEventListener("submit", function (event) {  //ne akarjon megnyitni egy új lapot amikor submitre kattintunk. onsubmit csak formban van ez. nem csak kattintásra történik.
+    form.addEventListener("submit", function (event) { 
         event.preventDefault();
         console.log(event.target);
     })
 
+    const apiKey = "pCcUL8XmwhHYkGRjcsNKCOmxe7FISccTWBl2Ie9h"
+    const requestedDate = "2022-02-22"
+    const apod = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${requestedDate}`) 
+
+
+    
+    const apodJson = await apod.json()
+    /* console.log(apodJson.explanation); */
+
+    fetch(`https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${requestedDate}`).then(
+        function (apodResponse) {
+            console.log(apodResponse);
+            apodResponse.json().then(
+                function (apodResponseJson) {
+                    console.log(apodResponseJson.explanation);
+                }
+            )
+        }
+    )
 }
 
 window.addEventListener("load", loadEvent)
